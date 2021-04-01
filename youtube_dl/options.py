@@ -308,6 +308,14 @@ def parseOpts(overrideArguments=None):
         metavar='COUNT', dest='max_views', default=None, type=int,
         help='Do not download any videos with more than COUNT views')
     selection.add_option(
+        '--min-duration',
+        metavar='COUNT', dest='min_duration', default=None, type=int,
+        help='Do not download any videos with less than COUNT seconds')
+    selection.add_option(
+        '--max-duration',
+        metavar='COUNT', dest='max_duration', default=None, type=int,
+        help='Do not download any videos with less than COUNT seconds')
+    selection.add_option(
         '--match-filter',
         metavar='FILTER', dest='match_filter', default=None,
         help=(

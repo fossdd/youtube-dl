@@ -206,6 +206,12 @@ class YoutubeDL(object):
                        downloaded.
                        Videos without view count information are always
                        downloaded. None for no limit.
+    min_duration:      An integer representing the minimum seconds
+                       duration of the video must have in order
+                       to not be skipped. None for no limit.
+    max_duration:      An integer representing the maximum seconds
+                       duration of the video must have in order
+                       to not be skipped. None for no limit.
     download_archive:  File name of a file where all downloads are recorded.
                        Videos already present in the file are not downloaded
                        again.
@@ -751,6 +757,14 @@ class YoutubeDL(object):
             max_views = self.params.get('max_views')
             if max_views is not None and view_count > max_views:
                 return 'Skipping %s, because it has exceeded the maximum view count (%d/%d)' % (video_title, view_count, max_views)
+        duration = info_dict.get('duration')
+        if duration is not None:
+            min_duration = self.params.get('min_duration')
+            if min_duration is not None and duration < min_duration:
+                return 'Skipping %s, because it has not reached minimum duration (%d/%d)' % (video_title, duration, min_duration)
+            max_duration = self.params.get('max_duration')
+            if max_duration is not None and duration > max_duration:
+                return 'Skipping %s, because it has exceeded the maximum duration (%d/%d)' % (video_title, duration, max_duration)
         if age_restricted(info_dict.get('age_limit'), self.params.get('age_limit')):
             return 'Skipping "%s" because it is age restricted' % video_title
         if self.in_download_archive(info_dict):
